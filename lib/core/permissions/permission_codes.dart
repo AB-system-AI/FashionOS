@@ -175,3 +175,30 @@ abstract final class PerformancePermissions {
 abstract final class CommissionPermissions {
   static const manage = 'commission.manage';
 }
+
+abstract final class ManufacturingPermissions {
+  static const view = 'manufacturing.view';
+  static const manage = 'manufacturing.manage';
+}
+
+abstract final class BomPermissions {
+  static const manage = 'bom.manage';
+}
+
+abstract final class ProductionPermissions {
+  static const create = 'production.create';
+  static const release = 'production.release';
+  static const complete = 'production.complete';
+}
+
+abstract final class QualityPermissions {
+  static const manage = 'quality.manage';
+}
+
+abstract final class PlanningPermissions {
+  static const manage = 'planning.manage';
+}
+
+abstract final class MaintenancePermissions {
+  static const manage = 'maintenance.manage';
+}
