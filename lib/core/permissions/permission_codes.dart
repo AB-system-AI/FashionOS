@@ -144,3 +144,34 @@ abstract final class FinancialReportPermissions {
   static const financial = 'reports.financial';
   static const tax = 'reports.tax';
 }
+
+abstract final class HrPermissions {
+  static const view = 'hr.view';
+  static const manage = 'hr.manage';
+}
+
+abstract final class EmployeePermissions {
+  static const manage = 'employee.manage';
+}
+
+abstract final class AttendancePermissions {
+  static const manage = 'attendance.manage';
+}
+
+abstract final class LeavePermissions {
+  static const manage = 'leave.manage';
+}
+
+abstract final class PayrollPermissions {
+  static const manage = 'payroll.manage';
+  static const approve = 'payroll.approve';
+  static const view = 'payroll.view';
+}
+
+abstract final class PerformancePermissions {
+  static const manage = 'performance.manage';
+}
+
+abstract final class CommissionPermissions {
+  static const manage = 'commission.manage';
+}

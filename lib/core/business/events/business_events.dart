@@ -344,6 +344,97 @@ class ReconciliationCompletedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, sessionId];
 }
 
+// ---------------------------------------------------------------------------
+// HR events
+// ---------------------------------------------------------------------------
+
+class AttendanceRecordedEvent extends DomainEvent {
+  const AttendanceRecordedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.attendanceId,
+    required this.employeeId,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String attendanceId;
+  final String employeeId;
+
+  @override
+  String get eventType => 'attendance.recorded';
+
+  @override
+  List<Object?> get props => [...super.props, attendanceId, employeeId];
+}
+
+class PayrollCalculatedEvent extends DomainEvent {
+  const PayrollCalculatedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.payrollRunId,
+    required this.totalNetMinor,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String payrollRunId;
+  final int totalNetMinor;
+
+  @override
+  String get eventType => 'payroll.calculated';
+
+  @override
+  List<Object?> get props => [...super.props, payrollRunId, totalNetMinor];
+}
+
+class PayrollApprovedEvent extends DomainEvent {
+  const PayrollApprovedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.payrollRunId,
+    required this.totalGrossMinor,
+    required this.totalTaxMinor,
+    required this.totalNetMinor,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String payrollRunId;
+  final int totalGrossMinor;
+  final int totalTaxMinor;
+  final int totalNetMinor;
+
+  @override
+  String get eventType => 'payroll.approved';
+
+  @override
+  List<Object?> get props => [...super.props, payrollRunId, totalGrossMinor, totalTaxMinor, totalNetMinor];
+}
+
+class LeaveApprovedEvent extends DomainEvent {
+  const LeaveApprovedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.leaveRequestId,
+    required this.employeeId,
+    required this.days,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String leaveRequestId;
+  final String employeeId;
+  final double days;
+
+  @override
+  String get eventType => 'leave.approved';
+
+  @override
+  List<Object?> get props => [...super.props, leaveRequestId, employeeId, days];
+}
+
 /// Well-known domain event type constants.
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
@@ -361,4 +452,8 @@ abstract final class DomainEventTypes {
   static const fiscalClosed = 'fiscal.closed';
   static const paymentRecorded = 'payment.recorded';
   static const reconciliationCompleted = 'reconciliation.completed';
+  static const attendanceRecorded = 'attendance.recorded';
+  static const payrollCalculated = 'payroll.calculated';
+  static const payrollApproved = 'payroll.approved';
+  static const leaveApproved = 'leave.approved';
 }

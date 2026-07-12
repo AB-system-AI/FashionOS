@@ -85,6 +85,9 @@ abstract final class SystemAccounts {
   static const salesRevenue = '4000';
   static const cogs = '5000';
   static const cashOverShort = '5900';
+  static const salariesExpense = '6100';
+  static const payrollPayable = '2300';
+  static const payrollTaxPayable = '2110';
 }
 
 /// Pure double-entry accounting rules and report calculations.
@@ -278,6 +281,30 @@ class AccountingEngine {
     return [
       _debitLine(accountsByCode, SystemAccounts.cashOverShort, abs, 'Cash over/short'),
       _creditLine(accountsByCode, SystemAccounts.cash, abs, 'Cash short'),
+    ];
+  }
+
+  List<JournalLine> payrollApprovedLines({
+    required double grossSalary,
+    required double taxAmount,
+    required double netPay,
+    required Map<String, Account> accountsByCode,
+  }) {
+    final liability = grossSalary - taxAmount;
+    return [
+      _debitLine(accountsByCode, SystemAccounts.salariesExpense, grossSalary, 'Payroll expense'),
+      _creditLine(accountsByCode, SystemAccounts.payrollPayable, liability, 'Payroll payable'),
+      if (taxAmount > 0) _creditLine(accountsByCode, SystemAccounts.payrollTaxPayable, taxAmount, 'Payroll tax'),
+    ];
+  }
+
+  List<JournalLine> bonusJournalLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    return [
+      _debitLine(accountsByCode, SystemAccounts.salariesExpense, amount, 'Bonus expense'),
+      _creditLine(accountsByCode, SystemAccounts.payrollPayable, amount, 'Bonus payable'),
     ];
   }
 

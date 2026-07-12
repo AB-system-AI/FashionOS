@@ -37,6 +37,7 @@ class AccountingIntegrationService {
     _eventBus.subscribe(DomainEventTypes.purchaseReceived, _onPurchaseReceived);
     _eventBus.subscribe(DomainEventTypes.stockChanged, _onStockChanged);
     _eventBus.subscribe(DomainEventTypes.paymentReceived, _onPaymentReceived);
+    _eventBus.subscribe(DomainEventTypes.payrollApproved, _onPayrollApproved);
   }
 
   Future<void> ensureDefaultChart(String tenantId) async {
@@ -51,6 +52,9 @@ class AccountingIntegrationService {
       (SystemAccounts.salesRevenue, 'Sales Revenue', AccountType.revenue, AccountNormalBalance.credit),
       (SystemAccounts.cogs, 'Cost of Goods Sold', AccountType.cogs, AccountNormalBalance.debit),
       (SystemAccounts.cashOverShort, 'Cash Over/Short', AccountType.expense, AccountNormalBalance.debit),
+      (SystemAccounts.salariesExpense, 'Salaries Expense', AccountType.expense, AccountNormalBalance.debit),
+      (SystemAccounts.payrollPayable, 'Payroll Payable', AccountType.liability, AccountNormalBalance.credit),
+      (SystemAccounts.payrollTaxPayable, 'Payroll Tax Payable', AccountType.liability, AccountNormalBalance.credit),
     ];
 
     final now = DateTime.now().toUtc();
@@ -150,6 +154,28 @@ class AccountingIntegrationService {
       paymentId: event.paymentId,
       amount: event.amountMinor / 100,
       tenantId: event.tenantId,
+    );
+  }
+
+  Future<void> _onPayrollApproved(DomainEvent event) async {
+    if (event is! PayrollApprovedEvent || event.tenantId == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final gross = event.totalGrossMinor / 100;
+    final tax = event.totalTaxMinor / 100;
+    final net = event.totalNetMinor / 100;
+    final lines = _engine.payrollApprovedLines(
+      grossSalary: gross,
+      taxAmount: tax,
+      netPay: net,
+      accountsByCode: map,
+    );
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manual,
+      referenceType: 'payroll_run',
+      referenceId: event.payrollRunId,
+      lines: lines,
+      description: 'Auto-post payroll ${event.payrollRunId}',
     );
   }
 }
