@@ -8,6 +8,7 @@ import 'package:fashion_pos_enterprise/features/auth/presentation/providers/auth
 import 'package:fashion_pos_enterprise/features/auth/routing/auth_route_paths.dart';
 import 'package:fashion_pos_enterprise/features/auth/routing/auth_routes.dart';
 import 'package:fashion_pos_enterprise/features/products/routing/product_routes.dart';
+import 'package:fashion_pos_enterprise/features/inventory/routing/inventory_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -22,7 +23,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     refreshListenable: notifier,
     redirect: notifier.redirect,
-    routes: [...buildAuthRoutes(), ...buildProductRoutes()],
+    routes: [...buildAuthRoutes(), ...buildProductRoutes(), ...buildInventoryRoutes()],
     errorBuilder: (context, state) {
       AppLogger.error('Route error: ${state.error}');
       return const Scaffold(body: Center(child: Text('Page not found')));

@@ -26,3 +26,20 @@ abstract final class BrandPermissions {
   static const delete = 'brand.delete';
   static const manage = 'brand.manage';
 }
+
+abstract final class WarehousePermissions {
+  static const view = 'warehouse.view';
+  static const create = 'warehouse.create';
+  static const update = 'warehouse.update';
+  static const delete = 'warehouse.delete';
+}
+
+abstract final class InventoryPermissions {
+  static const read = 'inventory.read';
+  static const adjust = 'inventory.adjust';
+  static const movement = 'inventory.movement';
+  static const transferCreate = 'inventory.transfer.create';
+  static const transferApprove = 'inventory.transfer.approve';
+  static const transferReceive = 'inventory.transfer.receive';
+  static const count = 'inventory.count';
+}
