@@ -115,3 +115,32 @@ abstract final class LayawayPermissions {
 abstract final class GiftReceiptPermissions {
   static const create = 'giftreceipt.create';
 }
+
+abstract final class AccountingPermissions {
+  static const view = 'accounting.view';
+  static const manage = 'accounting.manage';
+}
+
+abstract final class JournalPermissions {
+  static const create = 'journal.create';
+  static const post = 'journal.post';
+  static const reverse = 'journal.reverse';
+}
+
+abstract final class LedgerPermissions {
+  static const view = 'ledger.view';
+}
+
+abstract final class FiscalPermissions {
+  static const close = 'fiscal.close';
+}
+
+abstract final class BankPermissions {
+  static const manage = 'bank.manage';
+  static const reconcile = 'bank.reconcile';
+}
+
+abstract final class FinancialReportPermissions {
+  static const financial = 'reports.financial';
+  static const tax = 'reports.tax';
+}

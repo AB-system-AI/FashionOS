@@ -106,6 +106,7 @@ enum DocumentNumberType {
   saleOrder,
   cashSession,
   layaway,
+  journalEntry,
 }
 
 /// Notification channel.

@@ -264,6 +264,86 @@ class PromotionAppliedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, promotionId, discountMinor];
 }
 
+// ---------------------------------------------------------------------------
+// Accounting events
+// ---------------------------------------------------------------------------
+
+class JournalPostedEvent extends DomainEvent {
+  const JournalPostedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.journalEntryId,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String journalEntryId;
+
+  @override
+  String get eventType => 'journal.posted';
+
+  @override
+  List<Object?> get props => [...super.props, journalEntryId];
+}
+
+class FiscalClosedEvent extends DomainEvent {
+  const FiscalClosedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.fiscalPeriodId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String fiscalPeriodId;
+
+  @override
+  String get eventType => 'fiscal.closed';
+
+  @override
+  List<Object?> get props => [...super.props, fiscalPeriodId];
+}
+
+class PaymentRecordedEvent extends DomainEvent {
+  const PaymentRecordedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.paymentId,
+    required this.amountMinor,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String paymentId;
+  final int amountMinor;
+
+  @override
+  String get eventType => 'payment.recorded';
+
+  @override
+  List<Object?> get props => [...super.props, paymentId, amountMinor];
+}
+
+class ReconciliationCompletedEvent extends DomainEvent {
+  const ReconciliationCompletedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.sessionId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String sessionId;
+
+  @override
+  String get eventType => 'reconciliation.completed';
+
+  @override
+  List<Object?> get props => [...super.props, sessionId];
+}
+
 /// Well-known domain event type constants.
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
@@ -277,4 +357,8 @@ abstract final class DomainEventTypes {
   static const purchaseReceived = 'purchase.received';
   static const loyaltyTierChanged = 'loyalty.tier_changed';
   static const promotionApplied = 'promotion.applied';
+  static const journalPosted = 'journal.posted';
+  static const fiscalClosed = 'fiscal.closed';
+  static const paymentRecorded = 'payment.recorded';
+  static const reconciliationCompleted = 'reconciliation.completed';
 }

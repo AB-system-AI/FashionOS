@@ -23,6 +23,7 @@ class NumberGeneratorEngine {
     DocumentNumberType.saleOrder: const NumberSequenceFormat(type: DocumentNumberType.saleOrder, prefix: 'SO-', padding: 6),
     DocumentNumberType.cashSession: const NumberSequenceFormat(type: DocumentNumberType.cashSession, prefix: 'CS-', padding: 6),
     DocumentNumberType.layaway: const NumberSequenceFormat(type: DocumentNumberType.layaway, prefix: 'LAY-', padding: 6),
+    DocumentNumberType.journalEntry: const NumberSequenceFormat(type: DocumentNumberType.journalEntry, prefix: 'JE-', padding: 6),
     DocumentNumberType.barcode: const NumberSequenceFormat(type: DocumentNumberType.barcode, prefix: 'BC', padding: 10, includeDate: false),
     DocumentNumberType.sku: const NumberSequenceFormat(type: DocumentNumberType.sku, prefix: 'SKU-', padding: 8, includeDate: false),
   };
