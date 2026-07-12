@@ -10,6 +10,7 @@ import 'package:fashion_pos_enterprise/core/business/engines/currency_engine.dar
 import 'package:fashion_pos_enterprise/core/business/engines/discount_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/exchange_rate_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/inventory/inventory_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/purchasing/purchase_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/inventory_rules_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/loyalty_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/domain/enums/business_enums.dart';
@@ -52,6 +53,7 @@ final inventoryEngineProvider = Provider<InventoryEngine>((ref) {
     eventBus: ref.watch(domainEventBusProvider),
   );
 });
+final purchaseEngineProvider = Provider<PurchaseEngine>((ref) => PurchaseEngine());
 final validationEngineProvider = Provider<ValidationEngine>((ref) => ValidationEngine());
 final receiptEngineProvider = Provider<ReceiptEngine>((ref) => ReceiptEngine());
 final barcodeEngineProvider = Provider<BarcodeEngine>((ref) => BarcodeEngine());

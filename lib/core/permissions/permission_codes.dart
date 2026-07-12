@@ -43,3 +43,25 @@ abstract final class InventoryPermissions {
   static const transferReceive = 'inventory.transfer.receive';
   static const count = 'inventory.count';
 }
+
+abstract final class SupplierPermissions {
+  static const view = 'supplier.view';
+  static const create = 'supplier.create';
+  static const update = 'supplier.update';
+  static const delete = 'supplier.delete';
+}
+
+abstract final class PurchasePermissions {
+  static const view = 'purchase.view';
+  static const create = 'purchase.create';
+  static const update = 'purchase.update';
+  static const approve = 'purchase.approve';
+  static const send = 'purchase.send';
+  static const receive = 'purchase.receive';
+  static const close = 'purchase.close';
+  static const cancel = 'purchase.cancel';
+  static const payment = 'purchase.payment';
+  static const returnCreate = 'purchase.return.create';
+  static const returnApprove = 'purchase.return.approve';
+  static const report = 'purchase.report';
+}
