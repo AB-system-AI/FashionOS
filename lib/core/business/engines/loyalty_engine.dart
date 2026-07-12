@@ -21,9 +21,68 @@ class LoyaltyEngine {
       LoyaltyTransactionType.earn => _earn(request),
       LoyaltyTransactionType.redeem => _redeem(request),
       LoyaltyTransactionType.birthdayBonus => _birthdayBonus(request),
+      LoyaltyTransactionType.adjust => _adjust(request),
+      LoyaltyTransactionType.expire => _expire(request),
       LoyaltyTransactionType.tierUpgrade || LoyaltyTransactionType.tierDowngrade => _evaluateTier(request),
       _ => const Error(ValidationFailure(message: 'Unsupported loyalty transaction type', code: 'loyalty_invalid')),
     };
+  }
+
+  Result<LoyaltyTransactionResult> applyCampaignBonus({
+    required LoyaltyTransactionRequest request,
+    required int bonusPoints,
+  }) {
+    if (bonusPoints <= 0) {
+      return const Error(ValidationFailure(message: 'Bonus points must be positive', code: 'loyalty_invalid'));
+    }
+    final account = request.account.copyWith(
+      pointsBalance: request.account.pointsBalance + bonusPoints,
+      lifetimePoints: request.account.lifetimePoints + bonusPoints,
+      lastActivityAt: request.evaluatedAt ?? DateTime.now().toUtc(),
+    );
+    return Success(
+      LoyaltyTransactionResult(
+        account: account,
+        pointsDelta: bonusPoints,
+        type: LoyaltyTransactionType.earn,
+      ),
+    );
+  }
+
+  Result<LoyaltyTransactionResult> _adjust(LoyaltyTransactionRequest request) {
+    final delta = request.pointsToRedeem ?? 0;
+    if (delta == 0) {
+      return const Error(ValidationFailure(message: 'Adjustment points cannot be zero', code: 'loyalty_invalid'));
+    }
+    final nextBalance = request.account.pointsBalance + delta;
+    if (nextBalance < 0) {
+      return const Error(ValidationFailure(message: 'Adjustment would result in negative balance', code: 'loyalty_insufficient'));
+    }
+    final account = request.account.copyWith(
+      pointsBalance: nextBalance,
+      lifetimePoints: delta > 0 ? request.account.lifetimePoints + delta : request.account.lifetimePoints,
+      lastActivityAt: request.evaluatedAt ?? DateTime.now().toUtc(),
+    );
+    return Success(
+      LoyaltyTransactionResult(account: account, pointsDelta: delta, type: LoyaltyTransactionType.adjust),
+    );
+  }
+
+  Result<LoyaltyTransactionResult> _expire(LoyaltyTransactionRequest request) {
+    final points = request.pointsToRedeem;
+    if (points == null || points <= 0) {
+      return const Error(ValidationFailure(message: 'Expire points must be positive', code: 'loyalty_invalid'));
+    }
+    if (points > request.account.pointsBalance) {
+      return const Error(ValidationFailure(message: 'Cannot expire more than balance', code: 'loyalty_insufficient'));
+    }
+    final account = request.account.copyWith(
+      pointsBalance: request.account.pointsBalance - points,
+      lastActivityAt: request.evaluatedAt ?? DateTime.now().toUtc(),
+    );
+    return Success(
+      LoyaltyTransactionResult(account: account, pointsDelta: -points, type: LoyaltyTransactionType.expire),
+    );
   }
 
   Result<LoyaltyTransactionResult> _earn(LoyaltyTransactionRequest request) {

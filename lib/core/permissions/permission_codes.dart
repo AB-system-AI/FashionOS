@@ -65,3 +65,22 @@ abstract final class PurchasePermissions {
   static const returnApprove = 'purchase.return.approve';
   static const report = 'purchase.report';
 }
+
+abstract final class CustomerPermissions {
+  static const view = 'customer.view';
+  static const create = 'customer.create';
+  static const update = 'customer.update';
+  static const delete = 'customer.delete';
+}
+
+abstract final class LoyaltyPermissions {
+  static const manage = 'loyalty.manage';
+}
+
+abstract final class WalletPermissions {
+  static const manage = 'wallet.manage';
+}
+
+abstract final class CreditPermissions {
+  static const manage = 'credit.manage';
+}
