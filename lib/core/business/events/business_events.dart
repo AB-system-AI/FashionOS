@@ -51,6 +51,73 @@ class SaleCompletedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, saleId, grandTotalMinor, currencyCode];
 }
 
+class SaleCancelledEvent extends DomainEvent {
+  const SaleCancelledEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.saleId,
+    this.reason,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String saleId;
+  final String? reason;
+
+  @override
+  String get eventType => 'sale.cancelled';
+
+  @override
+  List<Object?> get props => [...super.props, saleId, reason];
+}
+
+class PaymentReceivedEvent extends DomainEvent {
+  const PaymentReceivedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.saleId,
+    required this.paymentId,
+    required this.amountMinor,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String saleId;
+  final String paymentId;
+  final int amountMinor;
+
+  @override
+  String get eventType => 'payment.received';
+
+  @override
+  List<Object?> get props => [...super.props, saleId, paymentId, amountMinor];
+}
+
+class CashSessionClosedEvent extends DomainEvent {
+  const CashSessionClosedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.sessionId,
+    required this.actualCashMinor,
+    required this.differenceMinor,
+    super.tenantId,
+    super.storeId,
+    super.correlationId,
+  });
+
+  final String sessionId;
+  final int actualCashMinor;
+  final int differenceMinor;
+
+  @override
+  String get eventType => 'cash_session.closed';
+
+  @override
+  List<Object?> get props => [...super.props, sessionId, actualCashMinor, differenceMinor];
+}
+
 // ---------------------------------------------------------------------------
 // Product & inventory events
 // ---------------------------------------------------------------------------
@@ -201,6 +268,9 @@ class PromotionAppliedEvent extends DomainEvent {
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
   static const saleCompleted = 'sale.completed';
+  static const saleCancelled = 'sale.cancelled';
+  static const paymentReceived = 'payment.received';
+  static const cashSessionClosed = 'cash_session.closed';
   static const productUpdated = 'product.updated';
   static const stockChanged = 'stock.changed';
   static const customerCreated = 'customer.created';

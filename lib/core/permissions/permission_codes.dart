@@ -84,3 +84,34 @@ abstract final class WalletPermissions {
 abstract final class CreditPermissions {
   static const manage = 'credit.manage';
 }
+
+abstract final class SalePermissions {
+  static const view = 'sale.view';
+  static const create = 'sale.create';
+  static const update = 'sale.update';
+  static const cancel = 'sale.cancel';
+  static const refund = 'sale.refund';
+  static const exchange = 'sale.exchange';
+  static const discount = 'sale.discount';
+  static const overridePrice = 'sale.override_price';
+  static const print = 'sale.print';
+  static const cash = 'sale.cash';
+  static const closeSession = 'sale.close_session';
+  static const payment = 'sale.payment';
+}
+
+abstract final class CouponPermissions {
+  static const manage = 'coupon.manage';
+}
+
+abstract final class ReceiptPermissions {
+  static const reprint = 'receipt.reprint';
+}
+
+abstract final class LayawayPermissions {
+  static const manage = 'layaway.manage';
+}
+
+abstract final class GiftReceiptPermissions {
+  static const create = 'giftreceipt.create';
+}

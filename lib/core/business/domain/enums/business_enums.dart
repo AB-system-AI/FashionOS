@@ -103,6 +103,9 @@ enum DocumentNumberType {
   receipt,
   barcode,
   sku,
+  saleOrder,
+  cashSession,
+  layaway,
 }
 
 /// Notification channel.

@@ -19,7 +19,7 @@ import 'package:fashion_pos_enterprise/core/business/engines/number_generator_en
 import 'package:fashion_pos_enterprise/core/business/engines/pricing_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/promotion_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/receipt_engine.dart';
-import 'package:fashion_pos_enterprise/core/business/engines/rule_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/sales/sales_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/tax_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/validation_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/workflow_engine.dart';
@@ -78,6 +78,9 @@ final exchangeRateEngineProvider = Provider<ExchangeRateEngine>((ref) {
   return ExchangeRateEngine(ref.watch(exchangeRateProviderProvider));
 });
 final cashSessionEngineProvider = Provider<CashSessionEngine>((ref) => CashSessionEngine());
+final salesEngineProvider = Provider<SalesEngine>((ref) {
+  return SalesEngine(eventBus: ref.watch(domainEventBusProvider));
+});
 final businessCalendarEngineProvider = Provider<BusinessCalendarEngine>((ref) => BusinessCalendarEngine());
 final ruleEngineProvider = Provider<RuleEngine>((ref) {
   return RuleEngine(notificationEngine: ref.watch(notificationEngineProvider));

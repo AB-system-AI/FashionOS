@@ -20,6 +20,9 @@ class NumberGeneratorEngine {
     DocumentNumberType.returnOrder: const NumberSequenceFormat(type: DocumentNumberType.returnOrder, prefix: 'RET-', padding: 6),
     DocumentNumberType.exchange: const NumberSequenceFormat(type: DocumentNumberType.exchange, prefix: 'EXC-', padding: 6),
     DocumentNumberType.receipt: const NumberSequenceFormat(type: DocumentNumberType.receipt, prefix: 'RCP-', padding: 6),
+    DocumentNumberType.saleOrder: const NumberSequenceFormat(type: DocumentNumberType.saleOrder, prefix: 'SO-', padding: 6),
+    DocumentNumberType.cashSession: const NumberSequenceFormat(type: DocumentNumberType.cashSession, prefix: 'CS-', padding: 6),
+    DocumentNumberType.layaway: const NumberSequenceFormat(type: DocumentNumberType.layaway, prefix: 'LAY-', padding: 6),
     DocumentNumberType.barcode: const NumberSequenceFormat(type: DocumentNumberType.barcode, prefix: 'BC', padding: 10, includeDate: false),
     DocumentNumberType.sku: const NumberSequenceFormat(type: DocumentNumberType.sku, prefix: 'SKU-', padding: 8, includeDate: false),
   };
