@@ -21,6 +21,7 @@ import 'package:fashion_pos_enterprise/core/business/engines/promotion_engine.da
 import 'package:fashion_pos_enterprise/core/business/engines/receipt_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/accounting/accounting_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/hr/hr_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/analytics/analytics_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/manufacturing/manufacturing_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/sales/sales_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/tax_engine.dart';
@@ -93,6 +94,7 @@ final hrEngineProvider = Provider<HREngine>((ref) {
 final manufacturingEngineProvider = Provider<ManufacturingEngine>((ref) {
   return ManufacturingEngine(eventBus: ref.watch(domainEventBusProvider));
 });
+final analyticsEngineProvider = Provider<AnalyticsEngine>((ref) => AnalyticsEngine());
 final businessCalendarEngineProvider = Provider<BusinessCalendarEngine>((ref) => BusinessCalendarEngine());
 final ruleEngineProvider = Provider<RuleEngine>((ref) {
   return RuleEngine(notificationEngine: ref.watch(notificationEngineProvider));

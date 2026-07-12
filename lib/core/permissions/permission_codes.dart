@@ -202,3 +202,27 @@ abstract final class PlanningPermissions {
 abstract final class MaintenancePermissions {
   static const manage = 'maintenance.manage';
 }
+
+abstract final class AnalyticsPermissions {
+  static const view = 'analytics.view';
+  static const manage = 'analytics.manage';
+}
+
+abstract final class DashboardPermissions {
+  static const manage = 'dashboard.manage';
+}
+
+abstract final class ReportPermissions {
+  static const view = 'reports.view';
+  static const create = 'reports.create';
+  static const export = 'reports.export';
+  static const schedule = 'reports.schedule';
+}
+
+abstract final class KpiPermissions {
+  static const view = 'kpi.view';
+}
+
+abstract final class ExecutiveDashboardPermissions {
+  static const view = 'executive.dashboard';
+}

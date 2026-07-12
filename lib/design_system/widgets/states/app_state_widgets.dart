@@ -6,7 +6,7 @@ import 'package:fashion_pos_enterprise/design_system/components/app_button.dart'
 import 'package:fashion_pos_enterprise/design_system/spacing/app_spacing.dart';
 import 'package:fashion_pos_enterprise/design_system/widgets/empty/app_empty_state.dart';
 import 'package:fashion_pos_enterprise/design_system/widgets/error_state_widget.dart';
-import 'package:fashion_pos_enterprise/design_system/widgets/loading/loading_state_widget.dart';
+import 'package:fashion_pos_enterprise/design_system/widgets/loading/app_loading_indicator.dart';
 
 /// Offline mode banner state.
 class OfflineStateWidget extends StatelessWidget {
@@ -101,4 +101,23 @@ class AppStateView extends StatelessWidget {
     }
     return child;
   }
+}
+
+/// Full-screen loading placeholder used by feature pages.
+class AppLoadingWidget extends StatelessWidget {
+  const AppLoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) => const AppLoadingIndicator();
+}
+
+/// Full-screen error placeholder used by feature pages.
+class AppErrorWidget extends StatelessWidget {
+  const AppErrorWidget({required this.message, this.onRetry, super.key});
+
+  final String message;
+  final VoidCallback? onRetry;
+
+  @override
+  Widget build(BuildContext context) => ErrorStateWidget(message: message, onRetry: onRetry);
 }
