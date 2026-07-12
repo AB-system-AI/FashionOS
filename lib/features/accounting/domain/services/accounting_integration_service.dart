@@ -9,25 +9,33 @@ import 'package:fashion_pos_enterprise/features/accounting/domain/enums/accounti
 import 'package:fashion_pos_enterprise/features/accounting/domain/repositories/accounting_repositories.dart';
 import 'package:fashion_pos_enterprise/core/infrastructure/repository/repository_query.dart';
 import 'package:fashion_pos_enterprise/features/accounting/domain/services/accounting_services.dart';
+import 'package:fashion_pos_enterprise/features/manufacturing/domain/repositories/manufacturing_repositories.dart';
+import 'package:fashion_pos_enterprise/features/products/domain/repositories/product_repository.dart';
 
-/// Subscribes to domain events from POS, Purchasing, Inventory, and CRM to auto-post journals.
+/// Subscribes to domain events from POS, Purchasing, Inventory, CRM, and Manufacturing to auto-post journals.
 class AccountingIntegrationService {
   AccountingIntegrationService({
     required DomainEventBus eventBus,
     required PostingService postingService,
     required AccountingRepository accountingRepository,
     required AccountingEngine accountingEngine,
+    ProductionRepository? productionRepository,
+    ProductRepository? productRepository,
     Uuid? uuid,
   })  : _eventBus = eventBus,
         _posting = postingService,
         _accounts = accountingRepository,
         _engine = accountingEngine,
+        _production = productionRepository,
+        _products = productRepository,
         _uuid = uuid ?? const Uuid();
 
   final DomainEventBus _eventBus;
   final PostingService _posting;
   final AccountingRepository _accounts;
   final AccountingEngine _engine;
+  final ProductionRepository? _production;
+  final ProductRepository? _products;
   final Uuid _uuid;
 
   void register() {
@@ -38,6 +46,11 @@ class AccountingIntegrationService {
     _eventBus.subscribe(DomainEventTypes.stockChanged, _onStockChanged);
     _eventBus.subscribe(DomainEventTypes.paymentReceived, _onPaymentReceived);
     _eventBus.subscribe(DomainEventTypes.payrollApproved, _onPayrollApproved);
+    _eventBus.subscribe(DomainEventTypes.productionStarted, _onProductionStarted);
+    _eventBus.subscribe(DomainEventTypes.productionCompleted, _onProductionCompleted);
+    _eventBus.subscribe(DomainEventTypes.materialIssued, _onMaterialIssued);
+    _eventBus.subscribe(DomainEventTypes.materialReturned, _onMaterialReturned);
+    _eventBus.subscribe(DomainEventTypes.finishedGoodsReceived, _onFinishedGoodsReceived);
   }
 
   Future<void> ensureDefaultChart(String tenantId) async {
@@ -55,6 +68,10 @@ class AccountingIntegrationService {
       (SystemAccounts.salariesExpense, 'Salaries Expense', AccountType.expense, AccountNormalBalance.debit),
       (SystemAccounts.payrollPayable, 'Payroll Payable', AccountType.liability, AccountNormalBalance.credit),
       (SystemAccounts.payrollTaxPayable, 'Payroll Tax Payable', AccountType.liability, AccountNormalBalance.credit),
+      (SystemAccounts.wip, 'Work In Process', AccountType.asset, AccountNormalBalance.debit),
+      (SystemAccounts.manufacturingVariance, 'Manufacturing Variance', AccountType.expense, AccountNormalBalance.debit),
+      (SystemAccounts.scrapExpense, 'Scrap Expense', AccountType.expense, AccountNormalBalance.debit),
+      (SystemAccounts.manufacturingOverhead, 'Manufacturing Overhead', AccountType.expense, AccountNormalBalance.debit),
     ];
 
     final now = DateTime.now().toUtc();
@@ -176,6 +193,101 @@ class AccountingIntegrationService {
       referenceId: event.payrollRunId,
       lines: lines,
       description: 'Auto-post payroll ${event.payrollRunId}',
+    );
+  }
+
+  Future<double> _productCost(String tenantId, String productId) async {
+    final product = await _products?.getById(productId, tenantId: tenantId);
+    return product?.cost ?? 0;
+  }
+
+  Future<void> _onProductionStarted(DomainEvent event) async {
+    if (event is! ProductionStartedEvent || event.tenantId == null || _production == null) return;
+    final order = await _production!.getById(event.productionOrderId, tenantId: event.tenantId);
+    if (order == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final materialValue = order.plannedQty * await _productCost(event.tenantId!, order.productId);
+    final lines = _engine.wipStartLines(amount: materialValue * 0.1, accountsByCode: map);
+    if (lines.isEmpty) return;
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manufacturing,
+      referenceType: 'production_order',
+      referenceId: event.productionOrderId,
+      lines: lines,
+      description: 'Production started ${order.orderNumber}',
+    );
+  }
+
+  Future<void> _onProductionCompleted(DomainEvent event) async {
+    if (event is! ProductionCompletedEvent || event.tenantId == null || _production == null) return;
+    final order = await _production!.getById(event.productionOrderId, tenantId: event.tenantId);
+    if (order == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final unitCost = await _productCost(event.tenantId!, order.productId);
+    final plannedValue = order.plannedQty * unitCost;
+    final actualValue = event.completedQty * unitCost;
+    final variance = actualValue - plannedValue;
+    final lines = _engine.manufacturingVarianceLines(varianceAmount: variance, accountsByCode: map);
+    if (lines.isEmpty) return;
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manufacturing,
+      referenceType: 'production_order',
+      referenceId: event.productionOrderId,
+      lines: lines,
+      description: 'Production variance ${order.orderNumber}',
+    );
+  }
+
+  Future<void> _onMaterialIssued(DomainEvent event) async {
+    if (event is! MaterialIssuedEvent || event.tenantId == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final cost = await _productCost(event.tenantId!, event.productId);
+    final amount = event.quantity * cost;
+    final lines = _engine.materialIssueLines(amount: amount, accountsByCode: map);
+    if (lines.isEmpty) return;
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manufacturing,
+      referenceType: 'material_issue',
+      referenceId: event.issueId,
+      lines: lines,
+      description: 'Material issue ${event.issueId}',
+    );
+  }
+
+  Future<void> _onMaterialReturned(DomainEvent event) async {
+    if (event is! MaterialReturnedEvent || event.tenantId == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final cost = await _productCost(event.tenantId!, event.productId);
+    final amount = event.quantity * cost;
+    final lines = _engine.materialReturnLines(amount: amount, accountsByCode: map);
+    if (lines.isEmpty) return;
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manufacturing,
+      referenceType: 'material_return',
+      referenceId: event.returnId,
+      lines: lines,
+      description: 'Material return ${event.returnId}',
+    );
+  }
+
+  Future<void> _onFinishedGoodsReceived(DomainEvent event) async {
+    if (event is! FinishedGoodsReceivedEvent || event.tenantId == null) return;
+    final map = await _accountsByCode(event.tenantId!);
+    final cost = await _productCost(event.tenantId!, event.productId);
+    final amount = event.quantity * cost;
+    final lines = _engine.finishedGoodsReceiptLines(amount: amount, accountsByCode: map);
+    if (lines.isEmpty) return;
+    await _posting.createAutoJournal(
+      tenantId: event.tenantId!,
+      source: JournalSource.manufacturing,
+      referenceType: 'finished_goods_receipt',
+      referenceId: event.receiptId,
+      lines: lines,
+      description: 'Finished goods receipt ${event.receiptId}',
     );
   }
 }

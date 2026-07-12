@@ -435,6 +435,168 @@ class LeaveApprovedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, leaveRequestId, employeeId, days];
 }
 
+// ---------------------------------------------------------------------------
+// Manufacturing events
+// ---------------------------------------------------------------------------
+
+class ProductionStartedEvent extends DomainEvent {
+  const ProductionStartedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.productionOrderId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String productionOrderId;
+
+  @override
+  String get eventType => 'production.started';
+
+  @override
+  List<Object?> get props => [...super.props, productionOrderId];
+}
+
+class ProductionCompletedEvent extends DomainEvent {
+  const ProductionCompletedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.productionOrderId,
+    required this.completedQty,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String productionOrderId;
+  final double completedQty;
+
+  @override
+  String get eventType => 'production.completed';
+
+  @override
+  List<Object?> get props => [...super.props, productionOrderId, completedQty];
+}
+
+class WorkOrderCompletedEvent extends DomainEvent {
+  const WorkOrderCompletedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.workOrderId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String workOrderId;
+
+  @override
+  String get eventType => 'work_order.completed';
+
+  @override
+  List<Object?> get props => [...super.props, workOrderId];
+}
+
+class MaterialIssuedEvent extends DomainEvent {
+  const MaterialIssuedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.issueId,
+    required this.productId,
+    required this.quantity,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String issueId;
+  final String productId;
+  final double quantity;
+
+  @override
+  String get eventType => 'material.issued';
+
+  @override
+  List<Object?> get props => [...super.props, issueId, productId, quantity];
+}
+
+class MaterialReturnedEvent extends DomainEvent {
+  const MaterialReturnedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.returnId,
+    required this.productId,
+    required this.quantity,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String returnId;
+  final String productId;
+  final double quantity;
+
+  @override
+  String get eventType => 'material.returned';
+
+  @override
+  List<Object?> get props => [...super.props, returnId, productId, quantity];
+}
+
+class QualityPassedEvent extends DomainEvent {
+  const QualityPassedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.inspectionId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String inspectionId;
+
+  @override
+  String get eventType => 'quality.passed';
+
+  @override
+  List<Object?> get props => [...super.props, inspectionId];
+}
+
+class QualityFailedEvent extends DomainEvent {
+  const QualityFailedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.inspectionId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String inspectionId;
+
+  @override
+  String get eventType => 'quality.failed';
+
+  @override
+  List<Object?> get props => [...super.props, inspectionId];
+}
+
+class FinishedGoodsReceivedEvent extends DomainEvent {
+  const FinishedGoodsReceivedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.receiptId,
+    required this.productId,
+    required this.quantity,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String receiptId;
+  final String productId;
+  final double quantity;
+
+  @override
+  String get eventType => 'finished_goods.received';
+
+  @override
+  List<Object?> get props => [...super.props, receiptId, productId, quantity];
+}
+
 /// Well-known domain event type constants.
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
@@ -456,4 +618,12 @@ abstract final class DomainEventTypes {
   static const payrollCalculated = 'payroll.calculated';
   static const payrollApproved = 'payroll.approved';
   static const leaveApproved = 'leave.approved';
+  static const productionStarted = 'production.started';
+  static const productionCompleted = 'production.completed';
+  static const workOrderCompleted = 'work_order.completed';
+  static const materialIssued = 'material.issued';
+  static const materialReturned = 'material.returned';
+  static const qualityPassed = 'quality.passed';
+  static const qualityFailed = 'quality.failed';
+  static const finishedGoodsReceived = 'finished_goods.received';
 }

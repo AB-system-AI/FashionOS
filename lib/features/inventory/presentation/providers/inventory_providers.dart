@@ -65,6 +65,13 @@ final stockCountRepositoryProvider = Provider<StockCountRepository>((ref) {
   );
 });
 
+final stockReservationRepositoryProvider = Provider<StockReservationRepository>((ref) {
+  return StockReservationRepositoryImpl(
+    database: ref.watch(appDatabaseProvider),
+    syncQueue: ref.watch(syncQueueWriterProvider),
+  );
+});
+
 final warehouseServiceProvider = Provider<WarehouseService>((ref) {
   return WarehouseService(
     repository: ref.watch(warehouseRepositoryProvider),

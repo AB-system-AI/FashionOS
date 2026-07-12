@@ -108,6 +108,8 @@ enum DocumentNumberType {
   layaway,
   journalEntry,
   payrollRun,
+  productionOrder,
+  workOrder,
 }
 
 /// Notification channel.

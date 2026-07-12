@@ -142,12 +142,17 @@ final paymentTermServiceProvider = Provider<PaymentTermService>((ref) {
   return PaymentTermService(repository: ref.watch(currencyRepositoryProvider));
 });
 
+import 'package:fashion_pos_enterprise/features/manufacturing/presentation/providers/manufacturing_providers.dart';
+import 'package:fashion_pos_enterprise/features/products/presentation/providers/product_providers.dart';
+
 final accountingIntegrationServiceProvider = Provider<AccountingIntegrationService>((ref) {
   return AccountingIntegrationService(
     eventBus: ref.watch(domainEventBusProvider),
     postingService: ref.watch(postingServiceProvider),
     accountingRepository: ref.watch(accountingRepositoryProvider),
     accountingEngine: ref.watch(accountingEngineProvider),
+    productionRepository: ref.watch(productionRepositoryProvider),
+    productRepository: ref.watch(productRepositoryProvider),
   );
 });
 

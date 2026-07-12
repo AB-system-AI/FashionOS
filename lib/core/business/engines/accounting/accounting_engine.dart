@@ -88,6 +88,10 @@ abstract final class SystemAccounts {
   static const salariesExpense = '6100';
   static const payrollPayable = '2300';
   static const payrollTaxPayable = '2110';
+  static const wip = '1250';
+  static const manufacturingVariance = '5910';
+  static const scrapExpense = '5920';
+  static const manufacturingOverhead = '5930';
 }
 
 /// Pure double-entry accounting rules and report calculations.
@@ -305,6 +309,107 @@ class AccountingEngine {
     return [
       _debitLine(accountsByCode, SystemAccounts.salariesExpense, amount, 'Bonus expense'),
       _creditLine(accountsByCode, SystemAccounts.payrollPayable, amount, 'Bonus payable'),
+    ];
+  }
+
+  List<JournalLine> materialIssueLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.wip, amount, 'WIP — material issue'),
+      _creditLine(accountsByCode, SystemAccounts.inventory, amount, 'Inventory — material issue'),
+    ];
+  }
+
+  List<JournalLine> materialReturnLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.inventory, amount, 'Inventory — material return'),
+      _creditLine(accountsByCode, SystemAccounts.wip, amount, 'WIP — material return'),
+    ];
+  }
+
+  List<JournalLine> wipStartLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.wip, amount, 'WIP — production started'),
+      _creditLine(accountsByCode, SystemAccounts.manufacturingOverhead, amount, 'Manufacturing overhead allocation'),
+    ];
+  }
+
+  List<JournalLine> finishedGoodsReceiptLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.inventory, amount, 'Finished goods receipt'),
+      _creditLine(accountsByCode, SystemAccounts.wip, amount, 'WIP — FG receipt'),
+    ];
+  }
+
+  List<JournalLine> scrapLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.scrapExpense, amount, 'Production scrap'),
+      _creditLine(accountsByCode, SystemAccounts.wip, amount, 'WIP — scrap'),
+    ];
+  }
+
+  List<JournalLine> manufacturingVarianceLines({
+    required double varianceAmount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (varianceAmount.abs() < 0.01) return [];
+    if (varianceAmount > 0) {
+      return [
+        _debitLine(accountsByCode, SystemAccounts.manufacturingVariance, varianceAmount, 'Unfavorable variance'),
+        _creditLine(accountsByCode, SystemAccounts.wip, varianceAmount, 'WIP variance'),
+      ];
+    }
+    final abs = varianceAmount.abs();
+    return [
+      _debitLine(accountsByCode, SystemAccounts.wip, abs, 'WIP variance'),
+      _creditLine(accountsByCode, SystemAccounts.manufacturingVariance, abs, 'Favorable variance'),
+    ];
+  }
+
+  List<JournalLine> productionCompletionLines({
+    required double laborCost,
+    required double overheadCost,
+    required Map<String, Account> accountsByCode,
+  }) {
+    final lines = <JournalLine>[];
+    if (laborCost > 0) {
+      lines.add(_debitLine(accountsByCode, SystemAccounts.wip, laborCost, 'Labor to WIP'));
+      lines.add(_creditLine(accountsByCode, SystemAccounts.salariesExpense, laborCost, 'Labor allocation'));
+    }
+    if (overheadCost > 0) {
+      lines.add(_debitLine(accountsByCode, SystemAccounts.wip, overheadCost, 'Overhead to WIP'));
+      lines.add(_creditLine(accountsByCode, SystemAccounts.manufacturingOverhead, overheadCost, 'Overhead allocation'));
+    }
+    return lines;
+  }
+
+  List<JournalLine> cogsPreparationLines({
+    required double amount,
+    required Map<String, Account> accountsByCode,
+  }) {
+    if (amount <= 0) return [];
+    return [
+      _debitLine(accountsByCode, SystemAccounts.cogs, amount, 'COGS preparation'),
+      _creditLine(accountsByCode, SystemAccounts.inventory, amount, 'Inventory — COGS'),
     ];
   }
 

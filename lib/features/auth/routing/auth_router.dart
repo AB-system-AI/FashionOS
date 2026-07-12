@@ -14,6 +14,7 @@ import 'package:fashion_pos_enterprise/features/customers/routing/customer_route
 import 'package:fashion_pos_enterprise/features/pos/routing/pos_routes.dart';
 import 'package:fashion_pos_enterprise/features/accounting/routing/accounting_routes.dart';
 import 'package:fashion_pos_enterprise/features/hr/routing/hr_routes.dart';
+import 'package:fashion_pos_enterprise/features/manufacturing/routing/manufacturing_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -28,7 +29,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     refreshListenable: notifier,
     redirect: notifier.redirect,
-    routes: [...buildAuthRoutes(), ...buildProductRoutes(), ...buildInventoryRoutes(), ...buildPurchasingRoutes(), ...buildCustomerRoutes(), ...buildPosRoutes(), ...buildAccountingRoutes(), ...buildHrRoutes()],
+    routes: [...buildAuthRoutes(), ...buildProductRoutes(), ...buildInventoryRoutes(), ...buildPurchasingRoutes(), ...buildCustomerRoutes(), ...buildPosRoutes(), ...buildAccountingRoutes(), ...buildHrRoutes(), ...buildManufacturingRoutes()],
     errorBuilder: (context, state) {
       AppLogger.error('Route error: ${state.error}');
       return const Scaffold(body: Center(child: Text('Page not found')));

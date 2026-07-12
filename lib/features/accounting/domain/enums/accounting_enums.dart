@@ -47,7 +47,8 @@ enum JournalSource {
   credit,
   loyalty,
   bank,
-  closing;
+  closing,
+  manufacturing;
 
   String get value => name;
 
