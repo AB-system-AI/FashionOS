@@ -27,6 +27,8 @@ class NumberGeneratorEngine {
     DocumentNumberType.payrollRun: const NumberSequenceFormat(type: DocumentNumberType.payrollRun, prefix: 'PR-', padding: 6),
     DocumentNumberType.productionOrder: const NumberSequenceFormat(type: DocumentNumberType.productionOrder, prefix: 'MO-', padding: 6),
     DocumentNumberType.workOrder: const NumberSequenceFormat(type: DocumentNumberType.workOrder, prefix: 'WO-', padding: 6),
+    DocumentNumberType.quotation: const NumberSequenceFormat(type: DocumentNumberType.quotation, prefix: 'QUO-', padding: 6),
+    DocumentNumberType.shipmentDoc: const NumberSequenceFormat(type: DocumentNumberType.shipmentDoc, prefix: 'SHP-', padding: 6),
     DocumentNumberType.barcode: const NumberSequenceFormat(type: DocumentNumberType.barcode, prefix: 'BC', padding: 10, includeDate: false),
     DocumentNumberType.sku: const NumberSequenceFormat(type: DocumentNumberType.sku, prefix: 'SKU-', padding: 8, includeDate: false),
   };

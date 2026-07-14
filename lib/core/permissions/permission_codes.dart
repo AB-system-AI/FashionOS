@@ -226,3 +226,37 @@ abstract final class KpiPermissions {
 abstract final class ExecutiveDashboardPermissions {
   static const view = 'executive.dashboard';
 }
+
+abstract final class SalesOmsPermissions {
+  static const view = 'sales.view';
+  static const manage = 'sales.manage';
+}
+
+abstract final class QuotationPermissions {
+  static const create = 'quotation.create';
+  static const approve = 'quotation.approve';
+}
+
+abstract final class SalesApprovalPermissions {
+  static const approve = 'sales.approve';
+}
+
+abstract final class ShipmentPermissions {
+  static const manage = 'shipment.manage';
+}
+
+abstract final class DeliveryPermissions {
+  static const manage = 'delivery.manage';
+}
+
+abstract final class SalesInvoicePermissions {
+  static const create = 'invoice.create';
+}
+
+abstract final class SalesReturnPermissions {
+  static const manage = 'return.manage';
+}
+
+abstract final class SalesExchangePermissions {
+  static const manage = 'exchange.manage';
+}

@@ -110,6 +110,8 @@ enum DocumentNumberType {
   payrollRun,
   productionOrder,
   workOrder,
+  quotation,
+  shipmentDoc,
 }
 
 /// Notification channel.

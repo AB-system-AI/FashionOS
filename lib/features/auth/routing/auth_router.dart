@@ -16,6 +16,7 @@ import 'package:fashion_pos_enterprise/features/accounting/routing/accounting_ro
 import 'package:fashion_pos_enterprise/features/hr/routing/hr_routes.dart';
 import 'package:fashion_pos_enterprise/features/manufacturing/routing/manufacturing_routes.dart';
 import 'package:fashion_pos_enterprise/features/analytics/routing/analytics_routes.dart';
+import 'package:fashion_pos_enterprise/features/sales/routing/sales_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -41,6 +42,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ...buildHrRoutes(),
       ...buildManufacturingRoutes(),
       ...buildAnalyticsRoutes(),
+      ...buildSalesRoutes(),
     ],
     errorBuilder: (context, state) {
       AppLogger.error('Route error: ${state.error}');

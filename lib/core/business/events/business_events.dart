@@ -597,6 +597,68 @@ class FinishedGoodsReceivedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, receiptId, productId, quantity];
 }
 
+class QuotationAcceptedEvent extends DomainEvent {
+  const QuotationAcceptedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.quotationId,
+    required this.customerId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String quotationId;
+  final String customerId;
+
+  @override
+  String get eventType => 'quotation.accepted';
+
+  @override
+  List<Object?> get props => [...super.props, quotationId, customerId];
+}
+
+class SalesOrderConfirmedEvent extends DomainEvent {
+  const SalesOrderConfirmedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.orderId,
+    required this.customerId,
+    required this.grandTotal,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String orderId;
+  final String customerId;
+  final double grandTotal;
+
+  @override
+  String get eventType => 'sales_order.confirmed';
+
+  @override
+  List<Object?> get props => [...super.props, orderId, customerId, grandTotal];
+}
+
+class ShipmentDispatchedEvent extends DomainEvent {
+  const ShipmentDispatchedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.shipmentId,
+    required this.orderId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String shipmentId;
+  final String orderId;
+
+  @override
+  String get eventType => 'shipment.dispatched';
+
+  @override
+  List<Object?> get props => [...super.props, shipmentId, orderId];
+}
+
 /// Well-known domain event type constants.
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
@@ -626,4 +688,7 @@ abstract final class DomainEventTypes {
   static const qualityPassed = 'quality.passed';
   static const qualityFailed = 'quality.failed';
   static const finishedGoodsReceived = 'finished_goods.received';
+  static const quotationAccepted = 'quotation.accepted';
+  static const salesOrderConfirmed = 'sales_order.confirmed';
+  static const shipmentDispatched = 'shipment.dispatched';
 }
