@@ -20,17 +20,20 @@ import 'package:fashion_pos_enterprise/core/business/engines/pricing_engine.dart
 import 'package:fashion_pos_enterprise/core/business/engines/promotion_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/receipt_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/rule_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/assets/assets_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/automation/automation_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/automation/scheduler_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/accounting/accounting_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/hr/hr_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/integration/integration_connector_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/sales_order/sales_order_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/treasury/treasury_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/analytics/analytics_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/manufacturing/manufacturing_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/sales/sales_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/tax_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/validation_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/workflow/approval_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/workflow_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/events/domain_event_bus.dart';
 
@@ -70,6 +73,9 @@ final numberGeneratorEngineProvider = Provider<NumberGeneratorEngine>((ref) {
   return NumberGeneratorEngine(ref.watch(sequenceStoreProvider));
 });
 final workflowEngineProvider = Provider<WorkflowEngine>((ref) => WorkflowEngine());
+final approvalEngineProvider = Provider<ApprovalEngine>((ref) {
+  return ApprovalEngine(workflowEngine: ref.watch(workflowEngineProvider));
+});
 final notificationEngineProvider = Provider<NotificationEngine>((ref) {
   return NotificationEngine(
     providers: [
@@ -101,6 +107,7 @@ final manufacturingEngineProvider = Provider<ManufacturingEngine>((ref) {
 });
 final analyticsEngineProvider = Provider<AnalyticsEngine>((ref) => AnalyticsEngine());
 final salesOrderEngineProvider = Provider<SalesOrderEngine>((ref) => SalesOrderEngine(eventBus: ref.watch(domainEventBusProvider)));
+final treasuryEngineProvider = Provider<TreasuryEngine>((ref) => TreasuryEngine(eventBus: ref.watch(domainEventBusProvider)));
 final integrationConnectorEngineProvider = Provider<IntegrationConnectorEngine>((ref) => IntegrationConnectorEngine());
 final businessCalendarEngineProvider = Provider<BusinessCalendarEngine>((ref) => BusinessCalendarEngine());
 final ruleEngineProvider = Provider<RuleEngine>((ref) {
@@ -113,6 +120,9 @@ final automationEngineProvider = Provider<AutomationEngine>((ref) {
   );
 });
 final schedulerEngineProvider = Provider<SchedulerEngine>((ref) => SchedulerEngine());
+final assetsEngineProvider = Provider<AssetsEngine>((ref) {
+  return AssetsEngine(eventBus: ref.watch(domainEventBusProvider));
+});
 
 final businessEngineFacadeProvider = Provider<BusinessEngineFacade>((ref) {
   return BusinessEngineFacade(

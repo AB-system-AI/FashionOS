@@ -112,6 +112,11 @@ enum DocumentNumberType {
   workOrder,
   quotation,
   shipmentDoc,
+  paymentVoucher,
+  receiptVoucher,
+  transfer,
+  cheque,
+  expenseRequest,
 }
 
 /// Notification channel.

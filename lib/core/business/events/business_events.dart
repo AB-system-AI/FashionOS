@@ -659,6 +659,50 @@ class ShipmentDispatchedEvent extends DomainEvent {
   List<Object?> get props => [...super.props, shipmentId, orderId];
 }
 
+class AssetDisposedEvent extends DomainEvent {
+  const AssetDisposedEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.assetId,
+    required this.gainLoss,
+    required this.proceeds,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String assetId;
+  final double gainLoss;
+  final double proceeds;
+
+  @override
+  String get eventType => 'asset.disposed';
+
+  @override
+  List<Object?> get props => [...super.props, assetId, gainLoss, proceeds];
+}
+
+class AssetTransferredEvent extends DomainEvent {
+  const AssetTransferredEvent({
+    required super.eventId,
+    required super.occurredAt,
+    required this.assetId,
+    required this.fromLocationId,
+    required this.toLocationId,
+    super.tenantId,
+    super.correlationId,
+  });
+
+  final String assetId;
+  final String fromLocationId;
+  final String toLocationId;
+
+  @override
+  String get eventType => 'asset.transferred';
+
+  @override
+  List<Object?> get props => [...super.props, assetId, fromLocationId, toLocationId];
+}
+
 /// Well-known domain event type constants.
 abstract final class DomainEventTypes {
   static const saleCreated = 'sale.created';
@@ -691,4 +735,6 @@ abstract final class DomainEventTypes {
   static const quotationAccepted = 'quotation.accepted';
   static const salesOrderConfirmed = 'sales_order.confirmed';
   static const shipmentDispatched = 'shipment.dispatched';
+  static const assetDisposed = 'asset.disposed';
+  static const assetTransferred = 'asset.transferred';
 }

@@ -29,6 +29,11 @@ class NumberGeneratorEngine {
     DocumentNumberType.workOrder: const NumberSequenceFormat(type: DocumentNumberType.workOrder, prefix: 'WO-', padding: 6),
     DocumentNumberType.quotation: const NumberSequenceFormat(type: DocumentNumberType.quotation, prefix: 'QUO-', padding: 6),
     DocumentNumberType.shipmentDoc: const NumberSequenceFormat(type: DocumentNumberType.shipmentDoc, prefix: 'SHP-', padding: 6),
+    DocumentNumberType.paymentVoucher: const NumberSequenceFormat(type: DocumentNumberType.paymentVoucher, prefix: 'PV-', padding: 6),
+    DocumentNumberType.receiptVoucher: const NumberSequenceFormat(type: DocumentNumberType.receiptVoucher, prefix: 'RV-', padding: 6),
+    DocumentNumberType.transfer: const NumberSequenceFormat(type: DocumentNumberType.transfer, prefix: 'TRF-', padding: 6),
+    DocumentNumberType.cheque: const NumberSequenceFormat(type: DocumentNumberType.cheque, prefix: 'CHQ-', padding: 6),
+    DocumentNumberType.expenseRequest: const NumberSequenceFormat(type: DocumentNumberType.expenseRequest, prefix: 'EXP-', padding: 6),
     DocumentNumberType.barcode: const NumberSequenceFormat(type: DocumentNumberType.barcode, prefix: 'BC', padding: 10, includeDate: false),
     DocumentNumberType.sku: const NumberSequenceFormat(type: DocumentNumberType.sku, prefix: 'SKU-', padding: 8, includeDate: false),
   };

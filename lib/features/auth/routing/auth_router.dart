@@ -17,9 +17,12 @@ import 'package:fashion_pos_enterprise/features/hr/routing/hr_routes.dart';
 import 'package:fashion_pos_enterprise/features/manufacturing/routing/manufacturing_routes.dart';
 import 'package:fashion_pos_enterprise/features/analytics/routing/analytics_routes.dart';
 import 'package:fashion_pos_enterprise/features/sales/routing/sales_routes.dart';
+import 'package:fashion_pos_enterprise/features/treasury/routing/treasury_routes.dart';
 import 'package:fashion_pos_enterprise/features/system/routing/system_routes.dart';
 import 'package:fashion_pos_enterprise/features/automation/routing/automation_routes.dart';
 import 'package:fashion_pos_enterprise/features/integrations/routing/integrations_routes.dart';
+import 'package:fashion_pos_enterprise/features/assets/routing/assets_routes.dart';
+import 'package:fashion_pos_enterprise/features/workflow/routing/workflow_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -46,9 +49,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       ...buildManufacturingRoutes(),
       ...buildAnalyticsRoutes(),
       ...buildSalesRoutes(),
+      ...buildTreasuryRoutes(),
       ...buildIntegrationsRoutes(),
       ...buildAutomationRoutes(),
       ...buildSystemRoutes(),
+      ...buildWorkflowRoutes(),
+      ...buildAssetsRoutes(),
     ],
     errorBuilder: (context, state) {
       AppLogger.error('Route error: ${state.error}');

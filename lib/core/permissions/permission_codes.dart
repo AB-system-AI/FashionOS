@@ -106,6 +106,7 @@ abstract final class CouponPermissions {
 
 abstract final class ReceiptPermissions {
   static const reprint = 'receipt.reprint';
+  static const manage = 'receipt.manage';
 }
 
 abstract final class LayawayPermissions {
@@ -326,4 +327,69 @@ abstract final class ApiKeyPermissions {
 
 abstract final class ConnectorPermissions {
   static const manage = 'connector.manage';
+}
+
+abstract final class TreasuryPermissions {
+  static const view = 'treasury.view';
+  static const manage = 'treasury.manage';
+}
+
+abstract final class CashPermissions {
+  static const manage = 'cash.manage';
+}
+
+abstract final class ChequePermissions {
+  static const manage = 'cheque.manage';
+}
+
+abstract final class TransferPermissions {
+  static const manage = 'transfer.manage';
+}
+
+abstract final class ExpensePermissions {
+  static const manage = 'expense.manage';
+}
+
+abstract final class PaymentPermissions {
+  static const manage = 'payment.manage';
+}
+
+abstract final class ReconciliationPermissions {
+  static const manage = 'reconciliation.manage';
+}
+
+abstract final class ForecastPermissions {
+  static const view = 'forecast.view';
+}
+
+abstract final class AssetsPermissions {
+  static const view = 'assets.view';
+  static const manage = 'assets.manage';
+}
+
+abstract final class AssetMaintenancePermissions {
+  static const view = 'maintenance.view';
+  static const manage = 'maintenance.manage';
+}
+
+abstract final class DepreciationPermissions {
+  static const manage = 'depreciation.manage';
+}
+
+abstract final class DisposalPermissions {
+  static const manage = 'disposal.manage';
+}
+
+abstract final class WorkflowAdminPermissions {
+  static const admin = 'workflow.admin';
+}
+
+abstract final class ApprovalPermissions {
+  static const view = 'approval.view';
+  static const manage = 'approval.manage';
+}
+
+abstract final class NotificationCenterPermissions {
+  static const view = 'notification.view';
+  static const manage = 'notification.manage';
 }
