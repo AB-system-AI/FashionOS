@@ -18,6 +18,18 @@ void main() {
     expect(codes.length, 4, reason: 'maintenance codes must not collide');
   });
 
+  test('approval permission codes are distinct between automation and workflow', () {
+    expect(ApprovalWorkflowPermissions.manage, 'automation.approval.manage');
+    expect(ApprovalPermissions.manage, 'approval.manage');
+    expect(ApprovalWorkflowPermissions.manage, isNot(ApprovalPermissions.manage));
+  });
+
+  test('enterprise admin and system admin use distinct namespaces', () {
+    expect(EnterpriseAdminPermissions.manage, 'admin.manage');
+    expect(SystemPermissions.manage, 'system.manage');
+    expect(EnterpriseAdminPermissions.manage, isNot(SystemPermissions.manage));
+  });
+
   test('treasury bank and receipt codes are distinct from accounting and POS', () {
     expect(TreasuryBankPermissions.manage, 'treasury.bank.manage');
     expect(TreasuryReceiptPermissions.manage, 'treasury.receipt.manage');

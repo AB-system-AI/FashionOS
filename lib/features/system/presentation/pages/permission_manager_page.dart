@@ -14,9 +14,9 @@ class PermissionManagerPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canManage = ref.watch(permissionCheckProvider(AdminPermissions.manage));
+    final canManage = ref.watch(permissionCheckProvider(SystemPermissions.manage));
     if (!canManage) {
-      return const AppScaffold(body: PermissionDeniedWidget(permission: AdminPermissions.manage));
+      return const AppScaffold(body: PermissionDeniedWidget(permission: SystemPermissions.manage));
     }
     final user = ref.watch(currentUserProvider);
     if (user == null) return const AppScaffold(body: Center(child: Text('Not signed in')));

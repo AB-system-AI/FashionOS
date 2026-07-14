@@ -9,7 +9,7 @@ void main() {
     expect(WorkflowPermissions.manage, 'workflow.manage');
     expect(RulePermissions.manage, 'rule.manage');
     expect(SchedulerPermissions.manage, 'scheduler.manage');
-    expect(ApprovalWorkflowPermissions.manage, 'approval.manage');
+    expect(ApprovalWorkflowPermissions.manage, 'automation.approval.manage');
     expect(AiPermissions.view, 'ai.view');
   });
 }

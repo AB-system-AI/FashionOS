@@ -193,7 +193,7 @@ class TenantAdminService {
 
   Future<Result<List<RoleDefinition>>> listRoles(AuthUser user) async {
     try {
-      _permissions.require(user, AdminPermissions.manage);
+      _permissions.require(user, SystemPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }
@@ -203,7 +203,7 @@ class TenantAdminService {
 
   Future<Result<RoleDefinition>> saveRole(AuthUser user, {required String code, required String name, List<String> permissions = const []}) async {
     try {
-      _permissions.require(user, AdminPermissions.manage);
+      _permissions.require(user, SystemPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }
@@ -244,7 +244,7 @@ class TenantAdminService {
 
   Future<Result<List<PermissionAssignment>>> listAssignments(AuthUser user, String subjectType, String subjectId) async {
     try {
-      _permissions.require(user, AdminPermissions.manage);
+      _permissions.require(user, SystemPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }
@@ -254,7 +254,7 @@ class TenantAdminService {
 
   Future<Result<SystemConfiguration?>> getConfiguration(AuthUser user) async {
     try {
-      _permissions.require(user, AdminPermissions.manage);
+      _permissions.require(user, SystemPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }

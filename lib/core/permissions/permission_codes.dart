@@ -305,7 +305,7 @@ abstract final class SchedulerPermissions {
 }
 
 abstract final class ApprovalWorkflowPermissions {
-  static const manage = 'approval.manage';
+  static const manage = 'automation.approval.manage';
 }
 
 abstract final class AiPermissions {
