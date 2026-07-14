@@ -17,5 +17,5 @@
 
 ## Permissions
 
-- View open requests and due schedules: `maintenance.view`
-- Create and complete requests: `maintenance.manage`
+- View open requests and due schedules: `assets.maintenance.view`
+- Create and complete requests: `assets.maintenance.manage`

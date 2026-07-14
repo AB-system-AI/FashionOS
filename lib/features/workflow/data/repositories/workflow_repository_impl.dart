@@ -7,7 +7,11 @@ import 'package:fashion_pos_enterprise/core/infrastructure/sync/sync_queue_write
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/approval.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/approval_template.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/notification.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/notification_queue.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/scheduler.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_execution.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_instance.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_template.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/enums/workflow_enums.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/repositories/workflow_repositories.dart';
 
@@ -269,5 +273,209 @@ class EscalationRuleLocalRepository extends WorkflowRepositoryImpl<EscalationRul
     return page.items
         .where((r) => r.isActive && (entityType == null || r.targetEntityType == entityType))
         .toList();
+  }
+}
+
+class WorkflowTemplateLocalRepository extends WorkflowRepositoryImpl<WorkflowTemplate>
+    implements WorkflowTemplateRepository {
+  WorkflowTemplateLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: WorkflowTemplate.entityTypeName,
+          fromPayload: WorkflowTemplate.fromPayload,
+          toSearchFields: (e) => (name: e.name, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<WorkflowTemplate>> listByTenant(String tenantId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items;
+  }
+}
+
+class WorkflowVersionLocalRepository extends WorkflowRepositoryImpl<WorkflowVersion>
+    implements WorkflowVersionRepository {
+  WorkflowVersionLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: WorkflowVersion.entityTypeName,
+          fromPayload: WorkflowVersion.fromPayload,
+          toSearchFields: (e) => (name: '${e.templateId}-v${e.versionNumber}', sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<WorkflowVersion>> listByTemplate(String tenantId, String templateId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items.where((v) => v.templateId == templateId).toList()
+      ..sort((a, b) => b.versionNumber.compareTo(a.versionNumber));
+  }
+
+  @override
+  Future<WorkflowVersion?> getLatestPublished(String tenantId, String templateId) async {
+    final versions = await listByTemplate(tenantId, templateId);
+    for (final v in versions) {
+      if (v.status == WorkflowVersionStatus.published) return v;
+    }
+    return null;
+  }
+}
+
+class WorkflowCategoryLocalRepository extends WorkflowRepositoryImpl<WorkflowCategory>
+    implements WorkflowCategoryRepository {
+  WorkflowCategoryLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: WorkflowCategory.entityTypeName,
+          fromPayload: WorkflowCategory.fromPayload,
+          toSearchFields: (e) => (name: e.name, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<WorkflowCategory>> listByTenant(String tenantId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items;
+  }
+}
+
+class WorkflowExecutionLocalRepository extends WorkflowRepositoryImpl<WorkflowExecution>
+    implements WorkflowExecutionRepository {
+  WorkflowExecutionLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: WorkflowExecution.entityTypeName,
+          fromPayload: WorkflowExecution.fromPayload,
+          toSearchFields: (e) => (name: e.templateId, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<WorkflowExecution>> listByTemplate(String tenantId, String templateId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items.where((e) => e.templateId == templateId).toList();
+  }
+
+  @override
+  Future<List<WorkflowExecution>> listActive(String tenantId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items.where((e) => e.isActive).toList();
+  }
+}
+
+class WorkflowStatisticsLocalRepository extends WorkflowRepositoryImpl<WorkflowStatistics>
+    implements WorkflowStatisticsRepository {
+  WorkflowStatisticsLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: WorkflowStatistics.entityTypeName,
+          fromPayload: WorkflowStatistics.fromPayload,
+          toSearchFields: (e) => (name: e.templateId, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<WorkflowStatistics>> listByTenant(String tenantId, {String? templateId}) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items.where((s) => templateId == null || s.templateId == templateId).toList();
+  }
+}
+
+class NotificationQueueLocalRepository extends WorkflowRepositoryImpl<NotificationQueueItem>
+    implements NotificationQueueRepository {
+  NotificationQueueLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: NotificationQueueItem.entityTypeName,
+          fromPayload: NotificationQueueItem.fromPayload,
+          toSearchFields: (e) => (name: e.title, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<NotificationQueueItem>> listPending(String tenantId, {int limit = 50}) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items
+        .where((i) => i.status == NotificationQueueStatus.pending || i.status == NotificationQueueStatus.failed)
+        .take(limit)
+        .toList();
+  }
+}
+
+class DeadLetterLocalRepository extends WorkflowRepositoryImpl<DeadLetterItem> implements DeadLetterRepository {
+  DeadLetterLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: DeadLetterItem.entityTypeName,
+          fromPayload: DeadLetterItem.fromPayload,
+          toSearchFields: (e) => (name: e.originalQueueId, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<DeadLetterItem>> listByTenant(String tenantId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items;
+  }
+}
+
+class NotificationPreferenceLocalRepository extends WorkflowRepositoryImpl<NotificationPreference>
+    implements NotificationPreferenceRepository {
+  NotificationPreferenceLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: NotificationPreference.entityTypeName,
+          fromPayload: NotificationPreference.fromPayload,
+          toSearchFields: (e) => (name: e.userId, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<NotificationPreference?> getByUser(String tenantId, String userId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    for (final p in page.items) {
+      if (p.userId == userId) return p;
+    }
+    return null;
+  }
+}
+
+class SchedulerJobLocalRepository extends WorkflowRepositoryImpl<ScheduledJobRecord>
+    implements SchedulerJobRepository {
+  SchedulerJobLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: ScheduledJobRecord.entityTypeName,
+          fromPayload: ScheduledJobRecord.fromPayload,
+          toSearchFields: (e) => (name: e.name, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<ScheduledJobRecord>> listActive(String tenantId) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    return page.items
+        .where((j) => j.status != JobStatus.cancelled && j.status != JobStatus.completed)
+        .toList();
+  }
+}
+
+class SchedulerExecutionLogLocalRepository extends WorkflowRepositoryImpl<JobExecutionLog>
+    implements SchedulerExecutionLogRepository {
+  SchedulerExecutionLogLocalRepository({required AppDatabase database, required SyncQueueWriter syncQueue})
+      : super(
+          database: database,
+          syncQueue: syncQueue,
+          entityType: JobExecutionLog.entityTypeName,
+          fromPayload: JobExecutionLog.fromPayload,
+          toSearchFields: (e) => (name: e.jobId, sku: null, barcode: null, storeId: null),
+        );
+
+  @override
+  Future<List<JobExecutionLog>> listRecent(String tenantId, {int limit = 100}) async {
+    final page = await getPage(RepositoryQuery(tenantId: tenantId, pageSize: 500));
+    final sorted = page.items.toList()..sort((a, b) => b.startedAt.compareTo(a.startedAt));
+    return sorted.take(limit).toList();
   }
 }

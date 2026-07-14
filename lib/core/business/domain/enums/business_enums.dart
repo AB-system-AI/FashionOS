@@ -127,6 +127,9 @@ enum NotificationChannel {
   whatsApp,
   inApp,
   background,
+  slack,
+  teams,
+  webhook,
 }
 
 /// Promotion conflict resolution strategy.

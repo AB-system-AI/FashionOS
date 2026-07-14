@@ -18,4 +18,4 @@
 
 ## Permissions
 
-`quality.manage`, `maintenance.manage`
+`quality.manage`, `manufacturing.maintenance.manage`

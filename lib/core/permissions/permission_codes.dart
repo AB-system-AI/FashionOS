@@ -201,7 +201,7 @@ abstract final class PlanningPermissions {
 }
 
 abstract final class MaintenancePermissions {
-  static const manage = 'maintenance.manage';
+  static const manage = 'manufacturing.maintenance.manage';
 }
 
 abstract final class AnalyticsPermissions {
@@ -284,7 +284,7 @@ abstract final class SecurityPermissions {
 }
 
 abstract final class SystemMaintenancePermissions {
-  static const manage = 'maintenance.manage';
+  static const manage = 'system.maintenance.manage';
 }
 
 abstract final class AutomationPermissions {
@@ -368,8 +368,16 @@ abstract final class AssetsPermissions {
 }
 
 abstract final class AssetMaintenancePermissions {
-  static const view = 'maintenance.view';
-  static const manage = 'maintenance.manage';
+  static const view = 'assets.maintenance.view';
+  static const manage = 'assets.maintenance.manage';
+}
+
+abstract final class TreasuryBankPermissions {
+  static const manage = 'treasury.bank.manage';
+}
+
+abstract final class TreasuryReceiptPermissions {
+  static const manage = 'treasury.receipt.manage';
 }
 
 abstract final class DepreciationPermissions {
@@ -392,4 +400,25 @@ abstract final class ApprovalPermissions {
 abstract final class NotificationCenterPermissions {
   static const view = 'notification.view';
   static const manage = 'notification.manage';
+}
+
+abstract final class EnterpriseAdminPermissions {
+  static const view = 'admin.view';
+  static const manage = 'admin.manage';
+}
+
+abstract final class OrganizationPermissions {
+  static const manage = 'org.manage';
+}
+
+abstract final class TenantSettingsPermissions {
+  static const settings = 'tenant.settings';
+}
+
+abstract final class UserAdminPermissions {
+  static const admin = 'user.admin';
+}
+
+abstract final class RoleAdminPermissions {
+  static const admin = 'role.admin';
 }

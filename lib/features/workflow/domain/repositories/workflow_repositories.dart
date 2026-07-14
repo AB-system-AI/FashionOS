@@ -4,7 +4,11 @@ import 'package:fashion_pos_enterprise/core/infrastructure/repository/repository
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/approval.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/approval_template.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/notification.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/notification_queue.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/scheduler.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_execution.dart';
 import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_instance.dart';
+import 'package:fashion_pos_enterprise/features/workflow/domain/entities/workflow_template.dart';
 
 abstract class TenantWorkflowDefinitionRepository implements BaseLocalRepository<TenantWorkflowDefinition> {
   Future<List<TenantWorkflowDefinition>> listActive(String tenantId);
@@ -47,4 +51,46 @@ abstract class ReminderRuleRepository implements BaseLocalRepository<ReminderRul
 
 abstract class EscalationRuleRepository implements BaseLocalRepository<EscalationRule> {
   Future<List<EscalationRule>> listActive(String tenantId, {String? entityType});
+}
+
+abstract class WorkflowTemplateRepository implements BaseLocalRepository<WorkflowTemplate> {
+  Future<List<WorkflowTemplate>> listByTenant(String tenantId);
+}
+
+abstract class WorkflowVersionRepository implements BaseLocalRepository<WorkflowVersion> {
+  Future<List<WorkflowVersion>> listByTemplate(String tenantId, String templateId);
+  Future<WorkflowVersion?> getLatestPublished(String tenantId, String templateId);
+}
+
+abstract class WorkflowCategoryRepository implements BaseLocalRepository<WorkflowCategory> {
+  Future<List<WorkflowCategory>> listByTenant(String tenantId);
+}
+
+abstract class WorkflowExecutionRepository implements BaseLocalRepository<WorkflowExecution> {
+  Future<List<WorkflowExecution>> listByTemplate(String tenantId, String templateId);
+  Future<List<WorkflowExecution>> listActive(String tenantId);
+}
+
+abstract class WorkflowStatisticsRepository implements BaseLocalRepository<WorkflowStatistics> {
+  Future<List<WorkflowStatistics>> listByTenant(String tenantId, {String? templateId});
+}
+
+abstract class NotificationQueueRepository implements BaseLocalRepository<NotificationQueueItem> {
+  Future<List<NotificationQueueItem>> listPending(String tenantId, {int limit = 50});
+}
+
+abstract class DeadLetterRepository implements BaseLocalRepository<DeadLetterItem> {
+  Future<List<DeadLetterItem>> listByTenant(String tenantId);
+}
+
+abstract class NotificationPreferenceRepository implements BaseLocalRepository<NotificationPreference> {
+  Future<NotificationPreference?> getByUser(String tenantId, String userId);
+}
+
+abstract class SchedulerJobRepository implements BaseLocalRepository<ScheduledJobRecord> {
+  Future<List<ScheduledJobRecord>> listActive(String tenantId);
+}
+
+abstract class SchedulerExecutionLogRepository implements BaseLocalRepository<JobExecutionLog> {
+  Future<List<JobExecutionLog>> listRecent(String tenantId, {int limit = 100});
 }

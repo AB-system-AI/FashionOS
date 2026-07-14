@@ -1,5 +1,7 @@
 # Production Readiness Report — RC1
 
+> **Superseded by RC2:** See `docs/release/RC2/PRODUCTION_READINESS_REPORT.md`
+
 ## Readiness Scorecard
 
 | Category | Score | Status |

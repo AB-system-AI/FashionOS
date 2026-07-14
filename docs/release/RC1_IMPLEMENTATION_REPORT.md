@@ -1,6 +1,8 @@
 # FashionOS Enterprise — Release Candidate 1 (RC1)
 ## Phases 14–17 Implementation Report
 
+> **Superseded by RC2:** See `docs/release/RC2/RC2_IMPLEMENTATION_REPORT.md` and `docs/release/RC2/` for Phase 18 production hardening, Treasury/Assets/Workflow modules, and updated permission namespaces.
+
 **Version:** RC1  
 **Date:** 2026-07-14  
 **Scope:** Enterprise AI & Automation, Integrations, System Admin, Production Hardening

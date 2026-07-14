@@ -26,6 +26,12 @@ class WorkflowDashboardPage extends ConsumerWidget {
       ('Notifications', Icons.notifications_outlined, WorkflowRoutePaths.notifications),
       ('Approval Templates', Icons.account_tree_outlined, WorkflowRoutePaths.approvalTemplates),
       ('Escalation Rules', Icons.trending_up_outlined, WorkflowRoutePaths.escalationRules),
+      ('Workflow Designer', Icons.design_services_outlined, WorkflowRoutePaths.designer),
+      ('Simulator', Icons.play_circle_outline, WorkflowRoutePaths.simulator),
+      ('Reports', Icons.assessment_outlined, WorkflowRoutePaths.reports),
+      ('Scheduler', Icons.schedule_outlined, WorkflowRoutePaths.scheduler),
+      ('Notification Prefs', Icons.tune_outlined, WorkflowRoutePaths.notificationPreferences),
+      ('Approval Analytics', Icons.analytics_outlined, WorkflowRoutePaths.approvalAnalytics),
     ];
     return AppScaffold(
       appBar: const AppAppBar(title: Text('Workflows')),

@@ -22,6 +22,7 @@ import 'package:fashion_pos_enterprise/features/system/routing/system_routes.dar
 import 'package:fashion_pos_enterprise/features/automation/routing/automation_routes.dart';
 import 'package:fashion_pos_enterprise/features/integrations/routing/integrations_routes.dart';
 import 'package:fashion_pos_enterprise/features/assets/routing/assets_routes.dart';
+import 'package:fashion_pos_enterprise/features/admin/routing/admin_routes.dart';
 import 'package:fashion_pos_enterprise/features/workflow/routing/workflow_routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -55,6 +56,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ...buildSystemRoutes(),
       ...buildWorkflowRoutes(),
       ...buildAssetsRoutes(),
+      ...buildAdminRoutes(),
     ],
     errorBuilder: (context, state) {
       AppLogger.error('Route error: ${state.error}');

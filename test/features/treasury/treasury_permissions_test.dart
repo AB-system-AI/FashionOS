@@ -7,12 +7,12 @@ void main() {
     expect(TreasuryPermissions.view, 'treasury.view');
     expect(TreasuryPermissions.manage, 'treasury.manage');
     expect(CashPermissions.manage, 'cash.manage');
-    expect(BankPermissions.manage, 'bank.manage');
+    expect(TreasuryBankPermissions.manage, 'treasury.bank.manage');
     expect(ChequePermissions.manage, 'cheque.manage');
     expect(TransferPermissions.manage, 'transfer.manage');
     expect(ExpensePermissions.manage, 'expense.manage');
     expect(PaymentPermissions.manage, 'payment.manage');
-    expect(ReceiptPermissions.manage, 'receipt.manage');
+    expect(TreasuryReceiptPermissions.manage, 'treasury.receipt.manage');
     expect(ReconciliationPermissions.manage, 'reconciliation.manage');
     expect(ForecastPermissions.view, 'forecast.view');
   });

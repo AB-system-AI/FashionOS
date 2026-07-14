@@ -22,7 +22,7 @@ core/business/    → AssetsEngine (pure logic)
 | Group | Codes |
 |-------|-------|
 | AssetsPermissions | `assets.view`, `assets.manage` |
-| AssetMaintenancePermissions | `maintenance.view`, `maintenance.manage` |
+| AssetMaintenancePermissions | `assets.maintenance.view`, `assets.maintenance.manage` |
 | DepreciationPermissions | `depreciation.manage` |
 | DisposalPermissions | `disposal.manage` |
 

@@ -136,7 +136,7 @@ class BankService {
 
   Future<Result<Bank>> createBank({required AuthUser user, required String name, String? code}) async {
     try {
-      _permissions.require(user, BankPermissions.manage);
+      _permissions.require(user, TreasuryBankPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }
@@ -163,7 +163,7 @@ class BankService {
     double interestRate = 0,
   }) async {
     try {
-      _permissions.require(user, BankPermissions.manage);
+      _permissions.require(user, TreasuryBankPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }
@@ -405,7 +405,7 @@ class ReceiptService {
 
   Future<Result<ReceiptVoucher>> create({required AuthUser user, required ReceiptInput input}) async {
     try {
-      _permissions.require(user, ReceiptPermissions.manage);
+      _permissions.require(user, TreasuryReceiptPermissions.manage);
     } on PermissionDeniedException catch (e) {
       return Error(ValidationFailure(message: e.toString(), code: 'permission_denied'));
     }

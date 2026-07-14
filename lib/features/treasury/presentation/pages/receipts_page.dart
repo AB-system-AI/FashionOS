@@ -55,7 +55,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
   Widget build(BuildContext context) {
     final allowed = ref.watch(permissionCheckProvider(TreasuryPermissions.view));
     if (!allowed) return const AppScaffold(body: PermissionDeniedWidget(permission: TreasuryPermissions.view));
-    final canManage = ref.watch(permissionCheckProvider(ReceiptPermissions.manage));
+    final canManage = ref.watch(permissionCheckProvider(TreasuryReceiptPermissions.manage));
     return AppScaffold(
       appBar: const AppAppBar(title: Text('Receipts')),
       floatingActionButton: canManage ? FloatingActionButton.extended(onPressed: _createSample, icon: const Icon(Icons.add), label: const Text('New')) : null,

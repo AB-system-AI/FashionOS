@@ -10,6 +10,6 @@ void main() {
     expect(AuditExplorerPermissions.explore, 'audit.explore');
     expect(FeatureFlagPermissions.manage, 'featureflag.manage');
     expect(SecurityPermissions.manage, 'security.manage');
-    expect(SystemMaintenancePermissions.manage, 'maintenance.manage');
+    expect(SystemMaintenancePermissions.manage, 'system.maintenance.manage');
   });
 }

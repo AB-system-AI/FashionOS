@@ -16,5 +16,16 @@ final workflowModuleInitializerProvider = Provider<Future<void> Function()>((ref
     sync.registerProcessor(ref.read(wfNotificationSyncProcessorProvider));
     sync.registerProcessor(ref.read(reminderRuleSyncProcessorProvider));
     sync.registerProcessor(ref.read(escalationRuleSyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfTemplateSyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfTemplateVersionSyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfCategorySyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfExecutionSyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfExecutionLogSyncProcessorProvider));
+    sync.registerProcessor(ref.read(wfStatisticsSyncProcessorProvider));
+    sync.registerProcessor(ref.read(notificationQueueSyncProcessorProvider));
+    sync.registerProcessor(ref.read(notificationDeadLetterSyncProcessorProvider));
+    sync.registerProcessor(ref.read(notificationPreferenceSyncProcessorProvider));
+    sync.registerProcessor(ref.read(schedulerJobSyncProcessorProvider));
+    sync.registerProcessor(ref.read(schedulerExecutionLogSyncProcessorProvider));
   };
 });

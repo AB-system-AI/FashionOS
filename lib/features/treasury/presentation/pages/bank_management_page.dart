@@ -51,7 +51,7 @@ class _BankManagementPageState extends ConsumerState<BankManagementPage> {
   Widget build(BuildContext context) {
     final allowed = ref.watch(permissionCheckProvider(TreasuryPermissions.view));
     if (!allowed) return const AppScaffold(body: PermissionDeniedWidget(permission: TreasuryPermissions.view));
-    final canManage = ref.watch(permissionCheckProvider(BankPermissions.manage));
+    final canManage = ref.watch(permissionCheckProvider(TreasuryBankPermissions.manage));
     return AppScaffold(
       appBar: const AppAppBar(title: Text('Bank Management')),
       floatingActionButton: canManage ? FloatingActionButton.extended(onPressed: _createSample, icon: const Icon(Icons.add), label: const Text('New')) : null,

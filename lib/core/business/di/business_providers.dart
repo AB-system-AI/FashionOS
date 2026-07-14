@@ -20,6 +20,7 @@ import 'package:fashion_pos_enterprise/core/business/engines/pricing_engine.dart
 import 'package:fashion_pos_enterprise/core/business/engines/promotion_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/receipt_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/rule_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/admin/administration_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/assets/assets_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/automation/automation_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/automation/scheduler_engine.dart';
@@ -34,6 +35,8 @@ import 'package:fashion_pos_enterprise/core/business/engines/sales/sales_engine.
 import 'package:fashion_pos_enterprise/core/business/engines/tax_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/validation_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/workflow/approval_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/workflow/scheduler_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/workflow/workflow_designer_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/workflow_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/events/domain_event_bus.dart';
 
@@ -76,6 +79,8 @@ final workflowEngineProvider = Provider<WorkflowEngine>((ref) => WorkflowEngine(
 final approvalEngineProvider = Provider<ApprovalEngine>((ref) {
   return ApprovalEngine(workflowEngine: ref.watch(workflowEngineProvider));
 });
+final workflowDesignerEngineProvider = Provider<WorkflowDesignerEngine>((ref) => WorkflowDesignerEngine());
+final workflowSchedulerEngineProvider = Provider<WorkflowSchedulerEngine>((ref) => WorkflowSchedulerEngine());
 final notificationEngineProvider = Provider<NotificationEngine>((ref) {
   return NotificationEngine(
     providers: [
@@ -85,6 +90,9 @@ final notificationEngineProvider = Provider<NotificationEngine>((ref) {
       NoOpNotificationProvider(NotificationChannel.sms),
       NoOpNotificationProvider(NotificationChannel.whatsApp),
       NoOpNotificationProvider(NotificationChannel.background),
+      NoOpNotificationProvider(NotificationChannel.slack),
+      NoOpNotificationProvider(NotificationChannel.teams),
+      NoOpNotificationProvider(NotificationChannel.webhook),
     ],
   );
 });
@@ -123,6 +131,7 @@ final schedulerEngineProvider = Provider<SchedulerEngine>((ref) => SchedulerEngi
 final assetsEngineProvider = Provider<AssetsEngine>((ref) {
   return AssetsEngine(eventBus: ref.watch(domainEventBusProvider));
 });
+final administrationEngineProvider = Provider<AdministrationEngine>((ref) => AdministrationEngine());
 
 final businessEngineFacadeProvider = Provider<BusinessEngineFacade>((ref) {
   return BusinessEngineFacade(

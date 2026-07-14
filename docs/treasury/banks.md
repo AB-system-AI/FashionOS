@@ -11,7 +11,8 @@ Banks and bank accounts support multi-currency balances, interest accrual, and c
 
 ## Permissions
 
-- `bank.manage` — create banks and accounts
+- `bank.manage` — accounting bank reconciliation (Accounting module)
+- `treasury.bank.manage` — create banks and accounts (Treasury module)
 - `cheque.manage` — issue and transition cheques
 
 ## Interest

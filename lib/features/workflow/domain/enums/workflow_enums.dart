@@ -88,3 +88,117 @@ enum EscalationTriggerType {
   static EscalationTriggerType fromValue(String? v) =>
       EscalationTriggerType.values.firstWhere((e) => e.value == v, orElse: () => EscalationTriggerType.timeout);
 }
+
+enum WorkflowVersionStatus {
+  draft('draft'),
+  published('published'),
+  archived('archived');
+
+  const WorkflowVersionStatus(this.value);
+  final String value;
+
+  static WorkflowVersionStatus fromValue(String? v) =>
+      WorkflowVersionStatus.values.firstWhere((e) => e.value == v, orElse: () => WorkflowVersionStatus.draft);
+}
+
+enum WorkflowActionType {
+  approval('approval'),
+  notification('notification'),
+  delay('delay'),
+  webhook('webhook'),
+  script('script');
+
+  const WorkflowActionType(this.value);
+  final String value;
+
+  static WorkflowActionType fromValue(String? v) =>
+      WorkflowActionType.values.firstWhere((e) => e.value == v, orElse: () => WorkflowActionType.approval);
+}
+
+enum ConditionOperator {
+  equals('eq'),
+  notEquals('neq'),
+  greaterThan('gt'),
+  lessThan('lt'),
+  contains('contains'),
+  exists('exists');
+
+  const ConditionOperator(this.value);
+  final String value;
+
+  static ConditionOperator fromValue(String? v) =>
+      ConditionOperator.values.firstWhere((e) => e.value == v, orElse: () => ConditionOperator.equals);
+}
+
+enum WorkflowExecutionStatus {
+  pending('pending'),
+  running('running'),
+  completed('completed'),
+  failed('failed'),
+  cancelled('cancelled');
+
+  const WorkflowExecutionStatus(this.value);
+  final String value;
+
+  static WorkflowExecutionStatus fromValue(String? v) =>
+      WorkflowExecutionStatus.values.firstWhere((e) => e.value == v, orElse: () => WorkflowExecutionStatus.pending);
+}
+
+enum JobScheduleType {
+  once('once'),
+  delayed('delayed'),
+  recurring('recurring'),
+  cron('cron');
+
+  const JobScheduleType(this.value);
+  final String value;
+
+  static JobScheduleType fromValue(String? v) =>
+      JobScheduleType.values.firstWhere((e) => e.value == v, orElse: () => JobScheduleType.once);
+}
+
+enum JobStatus {
+  pending('pending'),
+  queued('queued'),
+  running('running'),
+  completed('completed'),
+  failed('failed'),
+  cancelled('cancelled');
+
+  const JobStatus(this.value);
+  final String value;
+
+  static JobStatus fromValue(String? v) =>
+      JobStatus.values.firstWhere((e) => e.value == v, orElse: () => JobStatus.pending);
+}
+
+enum NotificationQueueStatus {
+  pending('pending'),
+  processing('processing'),
+  sent('sent'),
+  failed('failed'),
+  deadLetter('dead_letter');
+
+  const NotificationQueueStatus(this.value);
+  final String value;
+
+  static NotificationQueueStatus fromValue(String? v) =>
+      NotificationQueueStatus.values.firstWhere((e) => e.value == v, orElse: () => NotificationQueueStatus.pending);
+}
+
+enum ApprovalPatternType {
+  sequential('sequential'),
+  parallel('parallel'),
+  conditional('conditional'),
+  percentage('percentage'),
+  department('department'),
+  role('role'),
+  user('user'),
+  amount('amount');
+
+  const ApprovalPatternType(this.value);
+  final String value;
+
+  static ApprovalPatternType fromValue(String? v) =>
+      ApprovalPatternType.values.firstWhere((e) => e.value == v, orElse: () => ApprovalPatternType.sequential);
+}
