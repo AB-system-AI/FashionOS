@@ -260,3 +260,70 @@ abstract final class SalesReturnPermissions {
 abstract final class SalesExchangePermissions {
   static const manage = 'exchange.manage';
 }
+
+abstract final class SystemPermissions {
+  static const view = 'system.view';
+  static const manage = 'system.manage';
+}
+
+abstract final class AdminPermissions {
+  static const manage = 'admin.manage';
+}
+
+abstract final class AuditExplorerPermissions {
+  static const explore = 'audit.explore';
+}
+
+abstract final class FeatureFlagPermissions {
+  static const manage = 'featureflag.manage';
+}
+
+abstract final class SecurityPermissions {
+  static const manage = 'security.manage';
+}
+
+abstract final class SystemMaintenancePermissions {
+  static const manage = 'maintenance.manage';
+}
+
+abstract final class AutomationPermissions {
+  static const view = 'automation.view';
+  static const manage = 'automation.manage';
+}
+
+abstract final class WorkflowPermissions {
+  static const manage = 'workflow.manage';
+}
+
+abstract final class RulePermissions {
+  static const manage = 'rule.manage';
+}
+
+abstract final class SchedulerPermissions {
+  static const manage = 'scheduler.manage';
+}
+
+abstract final class ApprovalWorkflowPermissions {
+  static const manage = 'approval.manage';
+}
+
+abstract final class AiPermissions {
+  static const view = 'ai.view';
+}
+
+abstract final class IntegrationPermissions {
+  static const view = 'integrations.view';
+  static const manage = 'integrations.manage';
+}
+
+abstract final class WebhookPermissions {
+  static const manage = 'webhook.manage';
+}
+
+abstract final class ApiKeyPermissions {
+  static const manage = 'apikey.manage';
+}
+
+abstract final class ConnectorPermissions {
+  static const manage = 'connector.manage';
+}

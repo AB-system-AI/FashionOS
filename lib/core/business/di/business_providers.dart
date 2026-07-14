@@ -19,8 +19,12 @@ import 'package:fashion_pos_enterprise/core/business/engines/number_generator_en
 import 'package:fashion_pos_enterprise/core/business/engines/pricing_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/promotion_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/receipt_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/rule_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/automation/automation_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/automation/scheduler_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/accounting/accounting_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/hr/hr_engine.dart';
+import 'package:fashion_pos_enterprise/core/business/engines/integration/integration_connector_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/sales_order/sales_order_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/analytics/analytics_engine.dart';
 import 'package:fashion_pos_enterprise/core/business/engines/manufacturing/manufacturing_engine.dart';
@@ -97,10 +101,18 @@ final manufacturingEngineProvider = Provider<ManufacturingEngine>((ref) {
 });
 final analyticsEngineProvider = Provider<AnalyticsEngine>((ref) => AnalyticsEngine());
 final salesOrderEngineProvider = Provider<SalesOrderEngine>((ref) => SalesOrderEngine(eventBus: ref.watch(domainEventBusProvider)));
+final integrationConnectorEngineProvider = Provider<IntegrationConnectorEngine>((ref) => IntegrationConnectorEngine());
 final businessCalendarEngineProvider = Provider<BusinessCalendarEngine>((ref) => BusinessCalendarEngine());
 final ruleEngineProvider = Provider<RuleEngine>((ref) {
   return RuleEngine(notificationEngine: ref.watch(notificationEngineProvider));
 });
+final automationEngineProvider = Provider<AutomationEngine>((ref) {
+  return AutomationEngine(
+    ruleEngine: ref.watch(ruleEngineProvider),
+    workflowEngine: ref.watch(workflowEngineProvider),
+  );
+});
+final schedulerEngineProvider = Provider<SchedulerEngine>((ref) => SchedulerEngine());
 
 final businessEngineFacadeProvider = Provider<BusinessEngineFacade>((ref) {
   return BusinessEngineFacade(
